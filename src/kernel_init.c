@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-void print(const char* str); // declare the external function
+#include "kernel_screen.h"
 
 void kernel_main(void) {
     print("Hello from print!\n");

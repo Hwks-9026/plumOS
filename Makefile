@@ -28,5 +28,5 @@ clean:
 	rm -f .build/*.o iso/kernel.elf plum.iso
 
 run: plum.iso
-	qemu-system-x86_64 -cdrom plum.iso
+	qemu-system-i386 -cdrom plum.iso
 

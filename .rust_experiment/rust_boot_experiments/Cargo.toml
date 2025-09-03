@@ -1,7 +1,0 @@
-[package]
-name = "plumOS"
-version = "0.0.1"
-edition = "2024"
-
-[dependencies]
-x86_64 = "0.15.2"

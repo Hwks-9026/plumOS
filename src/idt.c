@@ -14,6 +14,8 @@ struct idt_ptr   idtp;
 extern void idt_load(uint32_t);
 extern void exception_isr(); // New exception stub
 extern void generic_isr();   // Generic hardware IRQ stub
+
+extern void isr0();          // The new timer ISR
 extern void isr1();          // Specific keyboard IRQ stub
 
 // --- C-Level Interrupt Handlers ---
@@ -66,8 +68,15 @@ void idt_init() {
     }
     
     // 3. Overwrite the keyboard entry with its specific ISR
+    idt_set_gate(32, (uint32_t)isr0, 0x08, 0x8E); // Timer
     idt_set_gate(33, (uint32_t)isr1, 0x08, 0x8E);
 
     // Load the new IDT
     idt_load((uint32_t)&idtp);
 }
+
+
+
+
+
+

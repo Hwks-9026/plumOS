@@ -1,20 +1,15 @@
-; src/idt.s
-
 ; Externs for our C-level handlers
-extern irq_handler          ; Specific handler for the keyboard
-extern generic_irq_handler  ; Generic handler for hardware interrupts
-extern exception_handler    ; New handler for CPU exceptions
+extern irq_handler
+extern generic_irq_handler
+extern exception_handler
+extern timer_handler
 
 section .text
 
 ; --- Stub for CPU exceptions ---
-; All CPU exceptions (0-31) will be routed here.
 global exception_isr
 exception_isr:
-    ; Note: We don't save registers because we are not going to return.
-    ; We will just halt the system.
     call exception_handler
-    ; The C handler will not return, it will hang the CPU.
     hlt
 
 ; --- Stubs for Hardware Interrupts (IRQs) ---
@@ -26,13 +21,19 @@ generic_isr:
     popad
     iretd
 
-; Specific ISR for the keyboard
-global isr1
-isr1:
+; Corrected macro definition: specifies it takes 2 arguments
+%macro IRQ_ISR 2
+    global isr%1
+isr%1:
     pushad
-    call irq_handler
+    call %2 ; Call the specific C handler
     popad
     iretd
+%endmacro
+
+; Create the ISRs using the macro
+IRQ_ISR 0, timer_handler    ; For the PIT (IRQ 0 -> int 32)
+IRQ_ISR 1, irq_handler      ; For the Keyboard (IRQ 1 -> int 33)
 
 ; Function to load the IDT
 global idt_load

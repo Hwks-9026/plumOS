@@ -3,19 +3,22 @@
 #include "kernel_screen.h"
 #include "gdt.h"
 #include "idt.h"          // Include the new IDT header
+// src/kernel_init.c
+#include "timer.h" // Include the new timer header
+// ... (other includes)
+
+extern volatile uint32_t ticks; // Get the tick counter from timer.c
 
 void kernel_main(void) {
-	clear_screen();
     gdt_init();
-    idt_init();       // Initialize the IDT after the GDT
+    idt_init();
+    pit_init(100); // Initialize timer to 100 Hz
+	clear_screen();
+    print("PlumOS is running!\n");
 
-    // Enable interrupts!
     __asm__ __volatile__ ("sti");
 
-
-	// The rest of the kernel will now be driven by interrupts.
-    // We can hang here.
     while (1) {
-        __asm__ __volatile__("hlt");
+		__asm__ __volatile__ ("hlt");
     }
 }

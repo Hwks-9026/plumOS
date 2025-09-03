@@ -13,6 +13,7 @@ OBJS = .build/boot.o \
        .build/idt_s.o \
        .build/gdt_c.o \
        .build/idt_c.o \
+	   .build/timer.o \
        .build/keyboard.o \
        .build/kernel_screen.o \
        .build/kernel_init.o
@@ -40,6 +41,9 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 .build/idt_c.o: src/idt.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+.build/timer.o: src/timer.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 .build/keyboard.o: src/keyboard.c

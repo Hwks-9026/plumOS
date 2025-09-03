@@ -5,7 +5,7 @@ LD = i686-elf-ld
 GR = grub-mkrescue
 
 # Add -masm=intel to CFLAGS for the inline assembly syntax
-CFLAGS = -O2 -Wall -Wextra -ffreestanding -mno-red-zone -m32 -masm=intel
+CFLAGS = -O3 -Wall -Wextra -ffreestanding -mno-red-zone -m32 -masm=intel
 LDFLAGS = -T src/link.ld -nostdlib
 
 OBJS = .build/boot.o \
